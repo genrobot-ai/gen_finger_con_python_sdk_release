@@ -21,7 +21,7 @@ else:
     from .pack import CmdPack
 
 
-VALID_COMMANDS = ['1234', 'camerarc', 'camerarl', 'camerarr', 'MCUID', 'DMZEROSET']
+VALID_COMMANDS = ['1234', 'camerarc', 'MCUID']
 
 
 def is_camera_calib_command(command: str) -> bool:
@@ -38,9 +38,9 @@ def main():
     usage = """
 Usage:
   Single-device mode (default when left/right omitted):
-    python3 scripts/camera_cmd.py {1234|camerarc|camerarl|camerarr|MCUID|DMZEROSET}
+    python3 scripts/camera_cmd.py {1234|camerarc|MCUID}
   Dual-device mode (left or right):
-    python3 scripts/camera_cmd.py {left|right} {1234|camerarc|camerarl|camerarr|MCUID|DMZEROSET}
+    python3 scripts/camera_cmd.py {left|right} {1234|camerarc|MCUID}
 
   Optional env: SERIAL_PORT=/dev/ttyUSB0 (overrides left/right default port)
 
@@ -48,10 +48,7 @@ Usage:
     left/right - Optional gripper side (omit for single-device mode)
     1234       - Confirm calibration complete
     camerarc   - Calibrate center camera (writes cam0_sensor_{single|left|right}.yaml)
-    camerarl   - Calibrate left camera (writes cam1_sensor_{single|left|right}.yaml)
-    camerarr   - Calibrate right camera (writes cam2_sensor_{single|left|right}.yaml)
     MCUID      - Query device MCUID
-    DMZEROSET  - Send DM zero-set command
     """
 
     if len(sys.argv) < 2 or sys.argv[1] in ('-h', '--help'):
@@ -77,10 +74,6 @@ Usage:
     yaml_filename = ""
     if record_value == "camerarc":
         yaml_filename = f"cam0_sensor_{side}.yaml"
-    elif record_value == "camerarl":
-        yaml_filename = f"cam1_sensor_{side}.yaml"
-    elif record_value == "camerarr":
-        yaml_filename = f"cam2_sensor_{side}.yaml"
 
     result_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "calib_result")
     if yaml_filename:
@@ -115,7 +108,7 @@ Usage:
         time.sleep(1.0)
         bus.send_camera_calib_cmd(record_value)
 
-        if record_value in ('MCUID', 'DMZEROSET'):
+        if record_value == 'MCUID':
             bus.wait_for_calib_response(3.0)
         elif is_camera_calib_command(record_value):
             bus.wait_for_calib_response(2.0)
@@ -128,8 +121,6 @@ Usage:
             print("Calibration OK !")
         elif record_value == "MCUID":
             print("MCUID query executed")
-        elif record_value == "DMZEROSET":
-            print("DMZEROSET command executed")
         else:
             print(f"Finished sending command: {record_value}")
             if yaml_filename:

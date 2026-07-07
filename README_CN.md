@@ -246,7 +246,6 @@ python3 start_finger.py right
 source venv/bin/activate
 python3 scripts/camera_cmd.py camerarc   # 相机标定（单相机）
 python3 scripts/camera_cmd.py MCUID      # 设备 ID
-python3 scripts/camera_cmd.py DMZEROSET  # 编码器零点设置
 ```
 
 **双设备（左 / 右）：**
@@ -256,11 +255,9 @@ source venv/bin/activate
 
 python3 scripts/camera_cmd.py left camerarc
 python3 scripts/camera_cmd.py left MCUID
-python3 scripts/camera_cmd.py left DMZEROSET
 
 python3 scripts/camera_cmd.py right camerarc
 python3 scripts/camera_cmd.py right MCUID
-python3 scripts/camera_cmd.py right DMZEROSET
 ```
 
 finger 新设备只有 1 个相机，常用标定命令为 `camerarc`。标定 YAML 文件保存至 `scripts/calib_result/`（如 `cam0_sensor_single.yaml`、`cam0_sensor_left.yaml`）。

@@ -246,7 +246,6 @@ Do **not** run these while `start_finger.py` or other control processes are acti
 source venv/bin/activate
 python3 scripts/camera_cmd.py camerarc   # Camera calibration (single camera)
 python3 scripts/camera_cmd.py MCUID      # Device ID
-python3 scripts/camera_cmd.py DMZEROSET  # Encoder zero setting
 ```
 
 **Dual device (left / right):**
@@ -256,11 +255,9 @@ source venv/bin/activate
 
 python3 scripts/camera_cmd.py left camerarc
 python3 scripts/camera_cmd.py left MCUID
-python3 scripts/camera_cmd.py left DMZEROSET
 
 python3 scripts/camera_cmd.py right camerarc
 python3 scripts/camera_cmd.py right MCUID
-python3 scripts/camera_cmd.py right DMZEROSET
 ```
 
 Finger devices use one camera, so `camerarc` is the normal calibration command. Calibration YAML files are saved to `scripts/calib_result/` (e.g. `cam0_sensor_single.yaml`, `cam0_sensor_left.yaml`).
