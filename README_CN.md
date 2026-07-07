@@ -16,7 +16,7 @@ License: [MIT License](LICENSE)
 - finger 开合距离编码器反馈
 - 通过 `DataBus.set_target_distance()` 控制 finger 开合
 - 单指 / 双指 CLI 启动脚本（`start_finger.py`）
-- 标定、设备 ID、编码器零点等工具脚本
+- 标定、设备 ID 等工具脚本
 - 正弦波跟踪测试与报告生成（`--sine-wave`、`--sine-report`）
 
 ## 2 环境要求

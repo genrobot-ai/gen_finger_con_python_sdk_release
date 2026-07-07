@@ -16,7 +16,7 @@ License: [MIT License](LICENSE)
 - Encoder feedback for finger opening distance
 - Finger distance control via `DataBus.set_target_distance()`
 - Single-finger and dual-finger CLI launcher (`start_finger.py`)
-- Utility scripts for calibration, device ID, and encoder zeroing
+- Utility scripts for calibration and device ID
 - Sine-wave tracking tests and report generation (`--sine-wave`, `--sine-report`)
 
 ## 2 Requirements
@@ -321,7 +321,7 @@ system.start()  # Blocks until ESC or Ctrl+C
 
 
 
-## 9 Documentation
+## 9 Documentation Index
 
 
 | Description              | Link                                                       |
