@@ -10,7 +10,7 @@ License: [MIT License](LICENSE)
 
 ## 1 Features
 
-- Pure Python implementation (`GripperSystem`)
+- Pure Python implementation (`FingerSystem`)
 - Single-camera image streaming with OpenCV live preview
 - Tactile sensor data callbacks (left / right)
 - Encoder feedback for finger opening distance
@@ -60,7 +60,7 @@ After startup, one camera preview window appears. Press ESC or Ctrl+C to exit.
 
 ## 4 Python Interface
 
-Subscribe to sensor data through `GripperSystem` callbacks and publish control commands through `DataBus`.
+Subscribe to sensor data through `FingerSystem` callbacks and publish control commands through `DataBus`.
 
 ### 4.1 Data Callbacks
 
@@ -275,7 +275,7 @@ SERIAL_PORT=/dev/ttyFingerLeft python3 scripts/camera_cmd.py MCUID
 ```python
 import threading
 import time
-from scripts import GripperSystem
+from scripts import FingerSystem
 
 def encoder_callback(record_data: bytes):
     # Parse encoder data
@@ -285,7 +285,7 @@ def tactile_callback(record_data: bytes):
     # Handle tactile data
     pass
 
-system = GripperSystem(
+system = FingerSystem(
     serial_port="/dev/ttyFingerLeft",
     video_devices=["/dev/finger_camera_left"],
     encoder_callback=encoder_callback,
@@ -297,7 +297,7 @@ def apply_control():
     while system.databus is None:
         time.sleep(0.1)
     time.sleep(0.5)
-    system.set_gripper_distance(0.05)  # 5 cm
+    system.set_finger_distance(0.05)  # 5 cm
 
 threading.Thread(target=apply_control, daemon=True).start()
 system.start()  # Blocks until ESC or Ctrl+C
@@ -312,7 +312,7 @@ system.start()  # Blocks until ESC or Ctrl+C
 | ------------------------------------ | ----------------------------------------------------------------- |
 | Serial port not found                | Run `sudo apt remove brltty`, then replug the device              |
 | Camera or serial has wrong path      | Re-check udev rules; see [docs/usb-setup.md](docs/usb-setup.md)   |
-| No `finger distance:` output         | Check gripper power; test with `sudo minicom -D /dev/ttyFingerLeft -b 921600` |
+| No `finger distance:` output         | Check finger power; test with `sudo minicom -D /dev/ttyFingerLeft -b 921600` |
 | Camera won't open                    | Previous process not exited: `pkill -9 -f start_finger.py`, or re-plug USB |
 | Low camera frame rate                | Keep `--camera-fps 60`; try `--stream-mode` on older hardware     |
 | `Permission denied` on serial/camera | Add user to `dialout` and `video` groups, or `sudo chmod 666 /dev/ttyUSB* /dev/video*` |

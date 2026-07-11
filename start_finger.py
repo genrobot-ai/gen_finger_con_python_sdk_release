@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Startup script — launches gripper hardware and cameras."""
+"""Startup script — launches finger hardware and cameras."""
 
 import sys
 import os
@@ -15,7 +15,7 @@ from typing import List, Optional, Tuple
 _sdk_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _sdk_root not in sys.path:
     sys.path.insert(0, _sdk_root)
-from scripts import GripperSystem
+from scripts import FingerSystem
 from tactile_processing import (
     convert_tactile_448_to_1000,
     set_tactile_grid_print_enabled,
@@ -137,9 +137,9 @@ def encoder_callback(record_data: bytes):
 
 
 class SineWaveController:
-    """Sinusoidal gripper position control."""
+    """Sinusoidal finger position control."""
     
-    def __init__(self, system: GripperSystem, amplitude: float = 0.05,
+    def __init__(self, system: FingerSystem, amplitude: float = 0.05,
                  center: float = 0.05, frequency: float = 0.5, duration: float = 1000,
                  auto_exit: bool = False):
         self.system = system
@@ -213,15 +213,15 @@ class SineWaveController:
                 self.system.camera.running = False
 
 
-class GripperController:
-    """High-level gripper control (fixed distance vs sine wave)."""
+class FingerController:
+    """High-level finger control (fixed distance vs sine wave)."""
     
-    def __init__(self, system: GripperSystem):
+    def __init__(self, system: FingerSystem):
         self.system = system
         self.sine_wave_controller: Optional[SineWaveController] = None
         
     def set_fixed_distance(self, distance: float):
-        """Set a fixed gripper opening distance."""
+        """Set a fixed finger opening distance."""
         if distance < 0.0 or distance > 0.2:
             print(f" Warning: distance {distance} out of range [0.0, 0.2], ignored")
             return
@@ -230,7 +230,7 @@ class GripperController:
             self.sine_wave_controller.stop()
         
         try:
-            self.system.set_gripper_distance(distance)
+            self.system.set_finger_distance(distance)
             print(f"Fixed finger distance set: {distance} m ({distance*100:.1f} cm)")
         except Exception as e:
             print(f" Failed to set finger distance: {e}")
@@ -366,9 +366,9 @@ def main():
         },
     }
     
-    parser = argparse.ArgumentParser(description="Start gripper system (optional sine wave mode)")
+    parser = argparse.ArgumentParser(description="Start finger system (optional sine wave mode)")
     parser.add_argument("side", type=str, choices=['left', 'right'],
-                       help="Gripper side: left or right")
+                       help="Finger side: left or right")
     parser.add_argument("--camera-resolutions", type=str, default="1600x1296",
                        help="Camera resolution as 'widthxheight'")
     parser.add_argument("--no-preview", action="store_true",
@@ -380,7 +380,7 @@ def main():
 
     control_group = parser.add_mutually_exclusive_group()
     control_group.add_argument("--distance", type=float, default=None,
-                              help="Fixed gripper distance in meters, range [0.0, 0.2]")
+                              help="Fixed finger distance in meters, range [0.0, 0.2]")
     control_group.add_argument("--sine-wave", action="store_true",
                               help="Enable sine wave control mode")
     
@@ -430,7 +430,7 @@ def main():
     set_tactile_grid_print_max_hz(args.tactile_print_hz)
     config = SIDE_CONFIG[args.side]
     
-    system = GripperSystem(
+    system = FingerSystem(
         serial_port=config['serial_port'],
         camera_resolutions=args.camera_resolutions,
         show_preview=not args.no_preview,
@@ -442,7 +442,7 @@ def main():
         trigger_mode=not args.stream_mode,
     )
     
-    controller = GripperController(system)
+    controller = FingerController(system)
     
     def setup_control_mode():
         """Apply control mode after DataBus is ready."""

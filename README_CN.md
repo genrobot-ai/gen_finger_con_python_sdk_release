@@ -10,7 +10,7 @@ License: [MIT License](LICENSE)
 
 ## 1 功能特性
 
-- 纯 Python 实现（`GripperSystem`）
+- 纯 Python 实现（`FingerSystem`）
 - 单相机图像流，支持 OpenCV 实时预览
 - 触觉数据回调（左 / 右）
 - finger 开合距离编码器反馈
@@ -60,7 +60,7 @@ python3 start_finger.py left --distance 0.05
 
 ## 4 Python 接口
 
-通过 `GripperSystem` 回调获取传感器数据，通过 `DataBus` 发布控制指令。
+通过 `FingerSystem` 回调获取传感器数据，通过 `DataBus` 发布控制指令。
 
 ### 4.1 数据回调
 
@@ -275,7 +275,7 @@ SERIAL_PORT=/dev/ttyFingerLeft python3 scripts/camera_cmd.py MCUID
 ```python
 import threading
 import time
-from scripts import GripperSystem
+from scripts import FingerSystem
 
 def encoder_callback(record_data: bytes):
     # 解析编码器数据
@@ -285,7 +285,7 @@ def tactile_callback(record_data: bytes):
     # 处理触觉数据
     pass
 
-system = GripperSystem(
+system = FingerSystem(
     serial_port="/dev/ttyFingerLeft",
     video_devices=["/dev/finger_camera_left"],
     encoder_callback=encoder_callback,
@@ -297,7 +297,7 @@ def apply_control():
     while system.databus is None:
         time.sleep(0.1)
     time.sleep(0.5)
-    system.set_gripper_distance(0.05)  # 5 cm
+    system.set_finger_distance(0.05)  # 5 cm
 
 threading.Thread(target=apply_control, daemon=True).start()
 system.start()  # 阻塞运行，ESC 或 Ctrl+C 退出

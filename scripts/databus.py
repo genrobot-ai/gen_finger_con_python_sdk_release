@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DataBus - Pure Python implementation for gripper communication
+DataBus - Pure Python implementation for finger communication
 Removed ROS dependencies, using callbacks instead of ROS topics
 """
 
@@ -19,7 +19,7 @@ from .pack import CmdPack, MessagePack, Opcode, RecordType
 from .das_protocol import DASProtocol
 
 
-# Default callbacks live in user scripts (gripper_controller.py, start_finger.py, camera_cmd.py)
+# Default callbacks live in user scripts (finger_controller.py, start_finger.py, camera_cmd.py)
 # so they stay editable even if databus.py is shipped obfuscated.
 
 
@@ -73,7 +73,7 @@ class DataBus:
         self.encoder_thread: threading.Thread = None
         self.tactile_thread: threading.Thread = None
         
-        self.gripper_dis = 0.0
+        self.finger_dis = 0.0
         self.angle_lock = threading.Lock()
         self.is_calib_cmd = is_calib_cmd
         
@@ -97,7 +97,7 @@ class DataBus:
 
     def set_target_distance(self, distance: float):
         """
-        Set target gripper opening (encoder setpoint).
+        Set target finger opening (encoder setpoint).
 
         Args:
             distance: Meters in [0.0, 0.2] (~20 cm max).
@@ -106,12 +106,12 @@ class DataBus:
             raise ValueError(f"Distance must be in [0.0, 0.2], got: {distance}")
         
         with self.angle_lock:
-            self.gripper_dis = distance
+            self.finger_dis = distance
 
     def get_target_distance(self) -> float:
         """Current target distance."""
         with self.angle_lock:
-            return self.gripper_dis
+            return self.finger_dis
 
     def drive_motor(self, angle_dgree: float):
         """Send drive command."""
@@ -335,7 +335,7 @@ class DataBus:
             start_time = time.time()
             
             with self.angle_lock:
-                dis_target = self.gripper_dis
+                dis_target = self.finger_dis
             
             self.add_cmd(
                 CmdPack.pack(

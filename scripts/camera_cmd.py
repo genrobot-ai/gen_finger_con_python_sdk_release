@@ -45,7 +45,7 @@ Usage:
   Optional env: SERIAL_PORT=/dev/ttyUSB0 (overrides left/right default port)
 
   Arguments:
-    left/right - Optional gripper side (omit for single-device mode)
+    left/right - Optional finger side (omit for single-device mode)
     1234       - Confirm calibration complete
     camerarc   - Calibrate center camera (writes cam0_sensor_{single|left|right}.yaml)
     MCUID      - Query device MCUID

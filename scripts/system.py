@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GripperSystem — main orchestration class for the gripper stack.
+FingerSystem — main orchestration class for the finger stack.
 Starts and manages serial communication and cameras.
 """
 
@@ -12,8 +12,8 @@ from .databus import DataBus, find_serial_port
 from .camera import CameraCapture
 
 
-class GripperSystem:
-    """Main gripper system controller."""
+class FingerSystem:
+    """Main finger system controller."""
     def __init__(
         self,
         serial_port: Optional[str] = None,
@@ -27,7 +27,7 @@ class GripperSystem:
         trigger_mode: bool = True,
     ):
         """
-        Initialize the gripper system.
+        Initialize the finger system.
 
         Args:
             serial_port: Serial device path; if None, auto-detect.
@@ -137,7 +137,7 @@ class GripperSystem:
         print("=" * 60)
         print("\nUsage:")
         print("  - Camera preview window (if enabled)")
-        print("  - Control finger with GripperController (or your own code)")
+        print("  - Control finger with FingerController (or your own code)")
         print("  - Press ESC in preview or Ctrl+C to stop")
         print("=" * 60)
         
@@ -169,9 +169,9 @@ class GripperSystem:
         
         print("System stopped")
     
-    def set_gripper_distance(self, distance: float):
+    def set_finger_distance(self, distance: float):
         """
-        Set target gripper opening distance.
+        Set target finger opening distance.
 
         Args:
             distance: Target distance in [0.0, 0.2] m (~20 cm max).

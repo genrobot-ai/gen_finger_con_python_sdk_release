@@ -1,11 +1,11 @@
 """
 Gen Controller SDK Python — top-level package.
 Re-exports public API from the scripts subpackage for imports like
-`from scripts import GripperSystem`.
+`from scripts import FingerSystem`.
 """
 
 from .scripts import (
-    GripperSystem,
+    FingerSystem,
     DataBus,
     find_serial_port,
     CameraCapture,
@@ -13,7 +13,7 @@ from .scripts import (
 )
 
 __all__ = [
-    'GripperSystem',
+    'FingerSystem',
     'DataBus',
     'find_serial_port',
     'CameraCapture',
